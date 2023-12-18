@@ -1,0 +1,140 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+void insertion(int a[], int n) {
+    int troca = 0;
+    int comp = 0;
+    
+    for (int i = 1; i < n; i++) {
+        int x = a[i];
+        troca++;
+        int j = i-1;
+        
+        while (j >= 0) {
+            comp++;
+            if (a[j] > x) {
+                a[j+1] = a[j];
+                troca++;
+                j--;
+            } else {
+                break;
+            }
+        }
+        a[j+1] = x;
+        troca++;
+    }
+    
+    printf("I %d %d %d\n", n, troca, comp);
+}
+
+void merge(int a[], int c, int f, int b[], int *troca, int *comp) {
+    if (c >= f) {
+        return;
+    }
+    
+    int m = (c + f) / 2;
+    merge(a, c, m, b, troca, comp);
+    merge(a, m+1, f, b, troca, comp);
+    
+    int i1 = c;
+    int i2 = m+1;
+    int j = 0;
+
+    while (i1 <= m) {
+        if (i2 <= f) {
+            (*comp)++;
+            if (a[i1] <= a[i2]){
+                b[j] = a[i1];
+                (*troca)++;
+                i1++;
+            } else {
+                b[j] = a[i2];
+                (*troca)++;
+                i2++;
+            }      
+            j++;
+        } else {
+            break;
+        }
+    }
+    
+    while (i1 <= m) {
+        b[j] = a[i1];
+        (*troca)++;
+        j++;
+        i1++;
+    }
+    
+    while (i2 <= f) {
+        if (a[i1] <= a[i2]){
+            b[j] = a[i2];
+            (*troca)++;
+            j++;  
+            i2++;
+        }      
+    }
+
+    j = 0;
+    for (int i = c; i <= f; i++, j++){
+        a[i] = b[j];
+        (*troca)++;
+    }
+}
+
+void mergeSort(int a[], int n) {
+    int *b = (int *)malloc(sizeof(int) * n);
+    if (b == NULL){
+        exit(-1);
+    }
+    
+    int troca = 0;
+    int comp = 0;
+    merge(a, 0, n-1, b, &troca, &comp);
+    
+    printf("M %d %d %d\n", n, troca, comp);
+    
+    free(b);
+}
+
+int main() {
+    int q;
+    scanf("%d", &q);
+    
+    int quant[q];
+    
+    for (int i = 0; i < q; i++) {
+        scanf("%d", &quant[i]);
+    }
+    
+    int **vetores = (int **)malloc(q * sizeof(int *));
+
+    for (int i = 0; i < q; i++) {
+        vetores[i] = (int *)malloc(quant[i] * sizeof(int));
+        
+        for (int j = 0; j < quant[i]; j++) {
+            scanf("%d", &vetores[i][j]);
+        }
+    }
+    
+    for (int i = 0; i < q; i++) {
+        int *vetor = vetores[i];
+        
+        int *copiaVetor = (int *)malloc(quant[i] * sizeof(int));
+        if (copiaVetor == NULL) {
+            exit(-1);
+        }
+        for (int j = 0; j < quant[i]; j++) {
+            copiaVetor[j] = vetor[j];
+        }
+        
+        insertion(vetor, quant[i]);
+        mergeSort(copiaVetor, quant[i]);
+    }
+    
+    for (int i = 0; i < q; i++) {
+        free(vetores[i]);
+    }
+    free(vetores);
+
+    return 0;
+}
