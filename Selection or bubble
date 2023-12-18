@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <string.h>
+     void selecao(int a[], int n){
+         for(int i = 0; i < n - 1 ; i++){
+             int m = i;
+             for(int j = i + 1; j < n; j++){
+             printf("C %d %d \n",m,j);
+             if(a[j] < a[m]){
+                     m = j;
+                 }
+             }
+             if(m != i){
+            printf("T %d %d \n",i,m);
+             int x= a[i];
+             a[i]  = a[m];
+             a[m] = x;
+         } 
+     }
+     }
+     
+     void bolha(int a[],int n){
+        int c,j,i,w,o;
+        for(i=n-1;i>=1;i=c){
+            o=0;
+            c=-1;
+            for(j = 0;j<i;j++){
+                int x = 0;
+                while(a[j] != x) {
+                    break;
+                }
+                c=j;
+                printf("C %d %d \n",j,j+1);
+                if(a[j] > a[j+1]){
+                    printf("T %d %d \n",j,j+1);
+                    int x = a[j];
+                    a[j] = a[j+1];
+                    a[j+1] = x;
+                    o=1;
+                }
+            }
+        if(!o) break;
+        }
+    }
+     
+     int main(){
+        int n;
+        int z;
+        char x[128] = "selecao";
+        char y[128];
+        scanf("%s",&y);
+        z = strcmp(x, y);
+        if(z != 0 && z != 17){
+            return 0;
+        }
+        scanf("%d",&n);
+        int a[n];
+        for(int i=0;i<n;i++){
+            scanf(" %d",&a[i]);
+        }
+        if(z == 0){
+            selecao(a, n);
+            for(int i=0;i<n;i++){
+            printf("%d ",a[i]);}
+        } else if(z == 17){
+             bolha(a, n);
+             for(int i=0;i<n;i++){
+            printf("%d ",a[i]);}
+                }
+     }
